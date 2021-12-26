@@ -97,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
                 ortaacikkart.setVisibility(View.VISIBLE);
                 kartGoster(cekilenKart,ortaacikkart);
                 ortaacikkart.setOnTouchListener(new ortaAcikTouchListener());
-                ortaacikkart.setOnDragListener(new ortaAcikDragListener());
             }else {
                 ortaacikkart.setVisibility(View.INVISIBLE);
             }
@@ -487,63 +486,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    class ortaAcikDragListener implements View.OnDragListener {
-
-        @Override
-        public boolean onDrag(View v, DragEvent event) {
-            int action = event.getAction();
-            switch (event.getAction()) {
-                case DragEvent.ACTION_DRAG_STARTED:
-                    break;
-                case DragEvent.ACTION_DRAG_ENTERED:
-                    break;
-                case DragEvent.ACTION_DRAG_EXITED:
-                    break;
-                case DragEvent.ACTION_DROP:
-                    // suruklenen kart view
-                    View view = (View) event.getLocalState();
-                    int[] suruklenen = new int[2];
-                    int[] birakilan = new int[2];
-                    //birakilan kart yeri indisini buluyoruz
-
-                    for (int i=0;i<7;i++) {
-                        for (int j = 0; j < 13 + i; j++) {
-                            if (kapaliKartlar[i][j].getId()==v.getId()){
-                                birakilan[0]=i;
-                                birakilan[1]=j;
-                                break;
-                            }
-                        }
-                    }
-                    int eski_deger=orta.getOrtadakiKart().getDeger();
-                    String eski_tip=orta.getOrtadakiKart().getTip();
-                    String eski_renk=orta.getOrtadakiKart().getRenk();
-                    int yeni_deger=kapaliKartlarBilgi[birakilan[0]][birakilan[1]].getDeger();
-                    String yeni_tip=kapaliKartlarBilgi[birakilan[0]][birakilan[1]].getTip();
-                    String yeni_renk=kapaliKartlarBilgi[birakilan[0]][birakilan[1]].getRenk();
-                    //karti koyma sartlari
-                    if (eski_deger==yeni_deger-1 && eski_tip!=yeni_tip && eski_renk!=yeni_renk ){
-                        //+1 dememizin sebebi bir sonrakine eklemekrtir
-                        kartGoster(orta.getOrtadakiKart(),kapaliKartlar[birakilan[0]][birakilan[1]+1]);
-                        kapaliKartlar[birakilan[0]][birakilan[1]+1].setOnTouchListener(new MyTouchListener());
-                        //birakilan eski yere artik kart suruklenemez
-                        kapaliKartlar[birakilan[0]][birakilan[1]].setOnDragListener(null);
-                        //bir sonrakine suruklenebilir
-                        kapaliKartlar[birakilan[0]][birakilan[1]+1].setOnDragListener(new MyDragListener());
-                        //yeni kart bilgisini guncelliyoruz
-                        orta.ortadakiKartiSil();
-                        kartGoster(orta.getOrtadakiKart(),ortaacikkart);
-                    }
-                    break;
-                case DragEvent.ACTION_DRAG_ENDED:
-                default:
-                    break;
-            }
-            return true;
-        }
-
-    }
-
+    
 
 
 }
